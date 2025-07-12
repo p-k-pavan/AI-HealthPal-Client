@@ -5,19 +5,34 @@ import React, { useState } from 'react'
 import { FaUser, FaEnvelope, FaMapMarkerAlt, FaLock, FaVenusMars, FaBirthdayCake } from 'react-icons/fa'
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/stores/useAuthStore';
 
-    interface SignupFormData {
-        name: string;
-        age: string;
-        gender: string;
-        email: string;
-        address: string;
-        password: string;
-    }
+interface SignupFormData {
+    name: string;
+    age: string;
+    gender: string;
+    email: string;
+    address: string;
+    password: string;
+}
+
+interface ApiResponse {
+    data: any;
+    status: number;
+    statusText: string;
+    headers: any;
+    config: any;
+    request?: any;
+    userId: string;
+    name: string;
+    role: string;
+
+}
 
 const SignupPage = () => {
+    const { setUser } = useAuthStore();
     const router = useRouter();
-    const [formData,setFormData] = useState({
+    const [formData, setFormData] = useState({
         name: "",
         age: "",
         gender: "",
@@ -26,7 +41,7 @@ const SignupPage = () => {
         password: ""
     })
 
-    interface ChangeEventType extends React.ChangeEvent<HTMLInputElement | HTMLSelectElement> {}
+    interface ChangeEventType extends React.ChangeEvent<HTMLInputElement | HTMLSelectElement> { }
 
     console.log(formData);
 
@@ -37,14 +52,7 @@ const SignupPage = () => {
         });
     }
 
-    interface ApiResponse {
-        data: any;
-        status: number;
-        statusText: string;
-        headers: any;
-        config: any;
-        request?: any;
-    }
+
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -60,7 +68,10 @@ const SignupPage = () => {
                 }
             );
 
-            if(response.data.status == 201){
+            if (response.status == 201) {
+                setUser(
+                    response.data
+                )
                 router.push("/")
             }
 
@@ -85,7 +96,7 @@ const SignupPage = () => {
                 {/* Card Body */}
                 <div className='bg-white shadow-2xl rounded-b-2xl p-6 md:p-8'>
                     <form className='space-y-4' onSubmit={handleSubmit}>
-                        
+
                         <div className='relative'>
                             <label className='block text-gray-700 text-md font-medium mb-2' htmlFor='name'>
                                 Full Name
@@ -104,7 +115,7 @@ const SignupPage = () => {
                             </div>
                         </div>
 
-                        
+
                         <div className='grid grid-cols-2 gap-4'>
                             <div className='relative'>
                                 <label className='block text-gray-700 text-md font-medium mb-2' htmlFor='age'>
@@ -145,7 +156,7 @@ const SignupPage = () => {
                             </div>
                         </div>
 
-                        
+
                         <div className='relative'>
                             <label className='block text-gray-700 text-md font-medium mb-2' htmlFor='email'>
                                 Email
@@ -164,7 +175,7 @@ const SignupPage = () => {
                             </div>
                         </div>
 
-                        
+
                         <div className='relative'>
                             <label className='block text-gray-700 text-md font-medium mb-2' htmlFor='address'>
                                 Address
@@ -183,7 +194,7 @@ const SignupPage = () => {
                             </div>
                         </div>
 
-                        
+
                         <div className='relative'>
                             <label className='block text-gray-700 text-md font-medium mb-2' htmlFor='password'>
                                 Password
@@ -202,7 +213,7 @@ const SignupPage = () => {
                             </div>
                         </div>
 
-                        
+
                         <button
                             type='submit'
                             className='w-full bg-gradient-to-r from-[#00ADB5] to-[#393E46] text-white py-3 px-4 rounded-lg font-semibold hover:opacity-90 transition-all duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#00ADB5] focus:ring-opacity-50'
@@ -210,7 +221,7 @@ const SignupPage = () => {
                             Create Account
                         </button>
 
-                        
+
                         <div className='text-center text-md text-gray-500 mt-4'>
                             Already have an account?{' '}
                             <Link href='/auth/login' className='text-[#00ADB5] font-medium hover:underline'>
