@@ -22,7 +22,7 @@ const Navbar = () => {
   const [showActivityBar, setShowActivityBar] = React.useState<Checked>(false)
 
   return (
-    <header className='w-full flex justify-between items-center shadow-lg p-4 bg-[#00ADB5] text-white sticky top-0 z-50'>
+    <header className='w-full flex justify-between items-center shadow-lg p-4 bg-gradient-to-br from-[#00ADB5] to-[#787d87] text-white sticky top-0 z-50'>
       <div className='text-xl md:text-2xl font-bold flex items-center gap-2 ml-2 sm:ml-4 lg:ml-12'>
         <FaBrain className="text-white" />  
         <h1 className='hidden sm:block'>AI HealthPal</h1>
