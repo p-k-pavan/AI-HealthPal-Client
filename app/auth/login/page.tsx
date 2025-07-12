@@ -6,6 +6,7 @@ import { FaUser, FaEnvelope, FaMapMarkerAlt, FaLock, FaVenusMars, FaBirthdayCake
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/stores/useAuthStore';
+import { toast } from "sonner"
 
 interface SignupFormData {
     email: string;
@@ -59,6 +60,7 @@ const SigninPage = () => {
             );
 
             if (response.status == 200) {
+                toast("User login is successfuly")
                 setUser(
                     response.data
                 )
@@ -66,8 +68,8 @@ const SigninPage = () => {
             }
             console.log(formData);
             console.log(response);
-        } catch (error: unknown) {
-
+        } catch (error: any) {
+            toast(error?.response?.data?.message || error?.message || "An error occurred")
         }
     }
 
